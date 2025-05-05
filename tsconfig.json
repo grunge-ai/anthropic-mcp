@@ -1,23 +1,49 @@
 {
-  "compilerOptions": {
-    "target": "es2018",
-    "module": "Node16",
-    "moduleResolution": "Node16",
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "outDir": "./dist",
-    "strict": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "skipLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "pkce-challenge": ["node_modules/pkce-challenge/dist/index.node"]
-    }
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+    "compilerOptions":
+    {
+		"strict":                           true,
+		"target":       					"ES6",
+		"module":       					"ESNext",
+		"moduleResolution": 				"Node",
+		"esModuleInterop":                  true,
+		"skipLibCheck":                     true,
+		"allowJs":                          true,
+		"jsx":          					"react-jsx",
+		"declaration":                      true,
+		"emitDeclarationOnly": 				false,
+		"outDir":                           "./dist",
+		"forceConsistentCasingInFileNames": true,
+		"experimentalDecorators": 			true,
+		"baseUrl":      					".",
+		"sourceMap":    					true,
+        "isolatedModules": 					true,
+		"allowSyntheticDefaultImports": 	true, 
+		"rootDirs":
+		[
+			"./src", 
+			"./types"
+		],
+		"typeRoots":
+		[
+			"./node_modules/@types", 
+			"./types"
+		],
+		"paths":
+		{
+    	  "pkce-challenge": ["node_modules/pkce-challenge/dist/index.node"]
+    	}
+    },
+    "exclude":                      		
+	[
+		"node_modules",
+		"dist"
+	],
+    "include": 
+    [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "src/**/*.js",
+        "src/**/*.jsx",
+		"src/**/*.d.ts"
+    ]
 }
