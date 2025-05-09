@@ -662,17 +662,28 @@ export class McpServer
 		}
 		
 		// Helper to check if an object is a Zod schema (ZodRawShape)
-		const isZodRawShape = (obj: unknown): obj is ZodRawShape =>
+		// const isZodRawShape = (obj: unknown): obj is ZodRawShape =>
+		// {
+		// 	if(typeof obj !== "object" || obj === null)
+		// 	{
+		// 		return false;
+		// 	}
+
+		// 	// Check that at least one property is a ZodType instance
+		// 	return Object.values(obj as object).some(v => v instanceof ZodType);
+		// }
+
+		// https://github.com/modelcontextprotocol/typescript-sdk/issues/451
+		const isZodRawShape = (obj: unknown) =>
 		{
 			if(typeof obj !== "object" || obj === null)
 			{
 				return false;
 			}
-
-			// Check that at least one property is a ZodType instance
-			return Object.values(obj as object).some(v => v instanceof ZodType);
+			
+			return Object.values(obj).some(v => v?._def?.typeName);
 		}
-
+    
 		let description: string | undefined;
 		if(typeof rest[0] === "string")
 		{
