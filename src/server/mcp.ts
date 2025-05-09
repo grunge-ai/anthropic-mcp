@@ -47,8 +47,6 @@ import { Completable, CompletableDef } 			from "./completable.js";
 import { UriTemplate, Variables } 				from "../shared/uriTemplate.js";
 import { RequestHandlerExtra } 					from "../shared/protocol.js";
 import { Transport } 							from "../shared/transport.js";
-import { createUniqueId } 						from "@grunge-ai/lib-toolkit";
-import { logger, chalk } 						from "@grunge-ai/lib-logger";
 
 /**
  * High-level MCP server that provides a simpler API for working with resources, tools, and prompts.
@@ -62,23 +60,19 @@ export class McpServer
 	*/
 	public readonly server: Server;
 
-	private _registeredResources: 			{ [uri: string]: RegisteredResource } 				= {};
-	private _registeredResourceTemplates: 	{ [name: string]: RegisteredResourceTemplate } 		= {};
-	protected _registeredTools:	 			{ [name: string]: RegisteredTool } 					= {};
-	private _registeredPrompts: 			{ [name: string]: RegisteredPrompt } 				= {};
+	protected _registeredResources: 			{ [uri: string]: RegisteredResource } 				= {};
+	protected _registeredResourceTemplates: 	{ [name: string]: RegisteredResourceTemplate } 		= {};
+	protected _registeredTools:	 				{ [name: string]: RegisteredTool } 					= {};
+	protected _registeredPrompts: 				{ [name: string]: RegisteredPrompt } 				= {};
 
-	private _completionHandlerInitialized 	= false;
-	private _toolHandlersInitialized 		= false;
-	private _resourceHandlersInitialized 	= false;
-	private _promptHandlersInitialized 		= false;
-
-	private _uuid?: string;
+	protected _completionHandlerInitialized 	= false;
+	protected _toolHandlersInitialized 			= false;
+	protected _resourceHandlersInitialized 		= false;
+	protected _promptHandlersInitialized 		= false;
 
 	constructor(serverInfo: Implementation, options?: ServerOptions)
 	{
 		this.server = new Server(serverInfo, options);
-		this._uuid = createUniqueId();
-		logger.info(chalk.yellow(`MCP Server started with UUID: ${this._uuid}`));
 	}
 
 	/**
@@ -688,7 +682,6 @@ export class McpServer
 		let description: string | undefined;
 		if(typeof rest[0] === "string")
 		{
-			logger.debug("description:", rest[0]);
 			description = rest.shift() as string;
 		}
 
@@ -700,11 +693,9 @@ export class McpServer
 		{
 			// We have at least two more args before the callback
 			const firstArg = rest[0];
-			logger.debug("firstArg:", firstArg);
 			
 			if(isZodRawShape(firstArg))
 			{
-				logger.huh("firstArg is ZodRawShape");
 				// We have a params schema as the first arg
 				paramsSchema = rest.shift() as ZodRawShape;
 				
@@ -718,7 +709,6 @@ export class McpServer
 			}
 			else if(typeof firstArg === "object" && firstArg !== null)
 			{
-				logger.huh("firstArg is ToolAnnotations");
 				// Not a ZodRawShape, so must be annotations in this position
 				// Case: tool(name, annotations, cb)
 				// Or: tool(name, description, annotations, cb)
@@ -727,7 +717,6 @@ export class McpServer
 		}
 
 		const cb = rest[0] as ToolCallback<ZodRawShape | undefined>;
-		logger.huh("cb:", cb);
 		const registeredTool: RegisteredTool =
 		{
 			description,
