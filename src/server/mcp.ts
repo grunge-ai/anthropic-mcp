@@ -661,6 +661,7 @@ export class McpServer
 			throw new Error(`Tool ${name} is already registered`);
 		}
 		
+		// https://github.com/modelcontextprotocol/typescript-sdk/issues/451
 		// Helper to check if an object is a Zod schema (ZodRawShape)
 		// const isZodRawShape = (obj: unknown): obj is ZodRawShape =>
 		// {
