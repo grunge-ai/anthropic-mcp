@@ -1,0 +1,3 @@
+# Every change to main and RELEASE-* needs an approval from a release approver
+# (Pete, Holly, James), never the change's author. Team: grunge-ai/release-approvers.
+* @grunge-ai/release-approvers
